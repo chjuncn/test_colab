@@ -34,12 +34,6 @@ export NGROK_AUTH_TOKEN="your_token_here"
 ```
 
 ### 4. Start Server
-**Option A: All-in-one (Recommended)**
-```bash
-caffeinate -i python run_server.py
-```
-
-**Option B: Separate terminals**
 ```bash
 # Terminal 1
 caffeinate -i python local_server.py
