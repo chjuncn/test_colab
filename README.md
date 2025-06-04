@@ -1,4 +1,4 @@
-# Test the running server:
+# 🚀 Test the running server:
 
 ```
 python client_test_code_exe.py
