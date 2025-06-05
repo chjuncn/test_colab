@@ -13,7 +13,7 @@ SCOPES = [
     'https://www.googleapis.com/auth/drive',
 ]
 
-CREDENTIALS_FILE = '/Users/sivaprasadsudhir/Desktop/google-api-keys/client_secret_312010692194-jvdcisk6o7c170bnkog9s1ncj6bk9r6e.apps.googleusercontent.com.json'
+CREDENTIALS_FILE = '/Users/chjun/Documents/GitHub/client_secret_365068632744-qjp8d3j5snp7sv3qrphtvqb8bibacp3v.apps.googleusercontent.com.json'
 
 DOCUMENT_ID = '1BdqU3UWkyFUVb94PDm5Lg04ukuJ5CCPho70YI41e6Ew'
 
