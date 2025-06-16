@@ -4,6 +4,8 @@ import uvicorn
 import json
 import types
 import os
+import sys
+from io import StringIO
 
 app = FastAPI(title="Code Execution Server", version="1.0.0")
 
@@ -36,22 +38,43 @@ def health_check():
 async def execute_code(request: Request):
     data = await request.json()
     code = data.get("code", "")
+    parameters = data.get("parameters", {})
+
+    print(f"{code}")
+    print("++++++++++++++++++++++++")
+    print(f"parameters: {parameters}")
     
     if not code.strip():
         return {"output": {"error": "No code provided", "type": "ValueError"}}
     
-    # Create a restricted globals environment
     restricted_globals = {
-        "__builtins__": __builtins__,
+        "__builtins__": {
+            **__builtins__,
+            "__import__": __import__,  # Allow imports
+        },
         "__name__": "__main__",
         "__doc__": None,
-        "__package__": None,
+        "__package__": None
     }
     
-    local_vars = {}
+    # Initialize execution environment with parameters
+    # CRITICAL: Use the same dict for globals and locals to fix import scoping
+    execution_env = restricted_globals.copy()
+    execution_env["parameters"] = parameters
+    
+    # Capture stdout to get print statements
+    old_stdout = sys.stdout
+    captured_output = StringIO()
+    sys.stdout = captured_output
     
     try:
-        exec(code, restricted_globals, local_vars)
+        exec(code, execution_env, execution_env)
+        
+        # Get the captured print output
+        print_output = captured_output.getvalue()
+        
+        # Restore stdout
+        sys.stdout = old_stdout
         
         # Comprehensive serialization filter
         def make_serializable(obj, max_depth=3, current_depth=0):
@@ -118,14 +141,22 @@ async def execute_code(request: Request):
                 return f"<{type(obj).__name__}: {str(obj)[:100]}>"
         
         serializable_vars = {}
-        for key, value in local_vars.items():
-            serializable_vars[key] = make_serializable(value)
+        for key, value in execution_env.items():
+            # Skip built-in variables that we don't want to return
+            if not key.startswith('__'):
+                serializable_vars[key] = make_serializable(value)
         
-        return {"output": serializable_vars, "status": "success"}
+        # Add print output if there is any
+        if print_output.strip():
+            serializable_vars["_stdout"] = print_output.strip()
+        
+        return {"result": serializable_vars, "status": "success"}
         
     except Exception as e:
+        # Restore stdout in case of error
+        sys.stdout = old_stdout
         return {
-            "output": {
+            "result": {
                 "error": str(e), 
                 "type": type(e).__name__,
                 "status": "error"

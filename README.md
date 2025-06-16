@@ -4,7 +4,7 @@
 python client_test_code_exe.py
 ```
 If you get error, check if the server is running by
-https://fd14-154-64-226-166.ngrok-free.app/docs#/.
+https://6bd2-89-213-179-161.ngrok-free.app.
 
 Note: Replace the url to yours if you want to test your own server.
 
@@ -36,7 +36,7 @@ export NGROK_AUTH_TOKEN="your_token_here"
 ### 4. Start Server
 ```bash
 # Terminal 1
-caffeinate -i python local_server.py
+caffeinate -i python local_code_executor/local_server.py
 
 # Terminal 2  
 caffeinate -i ngrok http 8000 --region=eu

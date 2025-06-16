@@ -107,6 +107,7 @@ result = {
 complex_code4 = """
 import random
 import time
+import pandas as pd
 
 class SortingAlgorithms:
     @staticmethod
@@ -201,4 +202,77 @@ result = {
     'stirling_approximation': round(stirling_approx, 2),
     'stirling_error_percent': round(abs(float(large_factorial) - stirling_approx) / float(large_factorial) * 100, 4)
 }
+"""
+
+
+complex_code6 = """
+import pandas as pd
+
+# Read the CSV file
+data = pd.read_csv(parameters['csv_file_path'])
+
+# Calculate key metrics
+product_name = "Apnea Detection App"
+total_app_opens = data['App Opens'].sum()
+ad_click_throughs = data['Ad Clicks'].sum()
+referral_revenue = data['Referral Revenue ($)'].sum()
+
+# Calculate conversion rate (Ad Clicks / App Opens * 100)
+conversion_rate = (ad_click_throughs / total_app_opens) * 100
+
+# Display results in your requested format
+print("App Performance Metrics:")
+print("=" * 40)
+print(f"* Product: {product_name}")
+print(f"* Total App Opens: {total_app_opens:,}")
+print(f"* Ad Click-Throughs: {ad_click_throughs:,}")
+print(f"* Referral Revenue: ${referral_revenue:,}")
+print(f"* Conversion Rate: {conversion_rate:.1f}%")
+
+# Return metrics as dictionary for further use
+results = {
+    'product': product_name,
+    'total_app_opens': total_app_opens,
+    'ad_click_throughs': ad_click_throughs,
+    'referral_revenue': referral_revenue,
+    'conversion_rate': conversion_rate
+}
+"""
+
+complex_code7 = """
+import pandas as pd
+
+def compute_metrics(csv_file_path):
+    # Read the CSV file
+    data = pd.read_csv(csv_file_path)
+
+    # Calculate key metrics
+    product_name = "Apnea Detection App"
+    total_app_opens = data['App Opens'].sum()
+    ad_click_throughs = data['Ad Clicks'].sum()
+    referral_revenue = data['Referral Revenue ($)'].sum()
+
+    # Calculate conversion rate (Ad Clicks / App Opens * 100)
+    conversion_rate = (ad_click_throughs / total_app_opens) * 100
+
+    # Display results in your requested format
+    print("App Performance Metrics:")
+    print("=" * 40)
+    print(f"* Product: {product_name}")
+    print(f"* Total App Opens: {total_app_opens:,}")
+    print(f"* Ad Click-Throughs: {ad_click_throughs:,}")
+    print(f"* Referral Revenue: ${referral_revenue:,}")
+    print(f"* Conversion Rate: {conversion_rate:.1f}%")
+
+    # Return metrics as dictionary for further use
+    results = {
+        'product': product_name,
+        'total_app_opens': total_app_opens,
+        'ad_click_throughs': ad_click_throughs,
+        'referral_revenue': referral_revenue,
+        'conversion_rate': conversion_rate
+    }
+    return results
+
+output =compute_metrics(parameters['csv_file_path'])
 """
